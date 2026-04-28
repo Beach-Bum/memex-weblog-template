@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; color: #222; background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: #0000EE; text-decoration: underline; }
+    a:visited { color: #551A8B; }
+
+    .site-header { border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .header-inner { max-width: 940px; margin: 0 auto; padding: 20px 20px 0; }
+    .header-top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .site-title { font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: bold; color: #111; text-decoration: none; }
+    .site-title:visited { color: #111; }
+    .site-title:hover { color: #0000EE; text-decoration: none; }
+    .site-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+    .site-nav a { color: #0000EE; text-decoration: none; font-weight: bold; }
+    .site-nav a:visited { color: #551A8B; }
+    .site-nav a:hover { text-decoration: underline; }
+    .site-nav a.active { text-decoration: underline; }
+
+    .theme-toggle { background: none; border: none; cursor: pointer; font-size: 15px; padding: 0; color: #666; margin-left: 8px; }
+    .theme-toggle:hover { color: #0000EE; }
+
+    .content { max-width: 940px; margin: 0 auto; padding: 32px 20px 60px; }
+    .content h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: bold; color: #111; margin-bottom: 16px; }
+    .content h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: bold; color: #111; margin: 24px 0 12px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .content h3 { font-family: Georgia, 'Times New Roman', serif; font-size: 15px; font-weight: bold; color: #111; margin: 20px 0 8px; }
+    .content p { margin: 0 0 12px; }
+    .content ul, .content ol { margin: 0 0 12px 24px; }
+    .content li { margin-bottom: 4px; }
+    .content pre { background: #1a1a1a; color: #e0e0e0; padding: 16px 20px; overflow-x: auto; margin: 16px 0; font-family: 'SF Mono', Menlo, Monaco, monospace; font-size: 13px; line-height: 1.5; border-left: 2px solid #0000EE; }
+    .content code { color: #0055aa; background: rgba(0,0,80,0.06); padding: 2px 5px; font-family: 'SF Mono', Menlo, Monaco, monospace; font-size: 13px; }
+    .content pre code { color: inherit; background: none; padding: 0; }
+    .content blockquote { border-left: 3px solid #ddd; padding-left: 16px; margin: 16px 0; color: #555; }
+    .content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
+    .content table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #ddd; font-weight: bold; background: #fafafa; }
+    .content table td { padding: 6px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+
+    .hero { position: relative; margin-bottom: 24px; }
+    .hero img { width: 100%; height: auto; display: block; }
+
+    .article-meta { color: #888; font-size: 13px; margin-bottom: 16px; }
+    .article-tags { margin: 16px 0; }
+    .article-tags a { display: inline-block; background: #e8e8e8; padding: 2px 10px; border-radius: 6px; font-size: 13px; text-decoration: none; color: #555; margin: 0 4px 4px 0; }
+    .article-tags a:hover { background: #ddd; }
+
+    .lineage { margin: 24px 0; padding: 16px; background: #fafafa; border: 1px solid #eee; }
+    .lineage h3 { margin-top: 0; }
+    .lineage ul { list-style: none; padding: 0; margin: 8px 0 0; }
+    .lineage li { margin-bottom: 6px; }
+    .lineage .rel-type { color: #888; font-size: 13px; font-style: italic; }
+
+    .thread-list { margin: 16px 0; }
+    .thread-list a { color: #0000EE; }
+
+    .site-footer { border-top: 1px solid rgba(0,0,0,0.08); padding: 20px; text-align: center; color: #888; font-size: 13px; }
+    .site-footer a { color: #0000EE; }
+
+    /* Dark mode */
+    [data-theme="dark"] { background: #1a1a2e; color: #e0e0e0; }
+    [data-theme="dark"] a { color: #7eb8ff; }
+    [data-theme="dark"] a:visited { color: #c9a0dc; }
+    [data-theme="dark"] .site-header { background: #1a1a2e; border-bottom-color: rgba(255,255,255,0.08); }
+    [data-theme="dark"] .site-title, [data-theme="dark"] .site-title:visited { color: #eee; }
+    [data-theme="dark"] .site-nav a { color: #7eb8ff; }
+    [data-theme="dark"] .site-footer { color: #ddd; border-top-color: rgba(255,255,255,0.08); }
+    [data-theme="dark"] .content h1, [data-theme="dark"] .content h2, [data-theme="dark"] .content h3 { color: #eee; }
+    [data-theme="dark"] .content pre { background: #0d0d1a; }
+    [data-theme="dark"] .content code { color: #88bbff; background: rgba(255,255,255,0.08); }
+    [data-theme="dark"] .lineage { background: #2a2a3e; border-color: #333; }
+    [data-theme="dark"] .article-tags a { background: #333; color: #ccc; }
+
+    @media (max-width: 800px) {
+      .content { padding: 24px 16px 40px; }
+      .site-title { font-size: 20px; }
+      .header-top { flex-direction: column; gap: 8px; }
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    document.querySelectorAll('code.language-mermaid').forEach(function(el) {
+      var pre = el.parentElement;
+      var div = document.createElement('pre');
+      div.className = 'mermaid';
+      div.textContent = el.textContent;
+      pre.parentElement.replaceChild(div, pre);
+    });
+    mermaid.initialize({ startOnLoad: true, theme: 'default', themeVariables: { fontSize: '14px' } });
+    mermaid.run();
+  </script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-top">
+        <a href="/" class="site-title">{{ site_name }}</a>
+        <nav class="site-nav">
+          <a href="/research/">Research</a>
+          <a href="/graph/">Graph</a>
+          <a href="/data/">Data</a>
+          <a href="/about/bio">About</a>
+          <a href="/feed.xml">RSS</a>
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">&#9790;</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="content">
+    {% block content %}{% endblock %}
+  </section>
+
+  <footer class="site-footer">
+    <a href="/feed.xml">RSS</a> &middot;
+    <a href="/sitemap.xml">Sitemap</a> &middot;
+    <a href="/llms.txt">llms.txt</a> &middot;
+    <a href="/agents.md">agents.md</a> &middot;
+    <a href="/graph.json">graph.json</a>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      var t = document.body.getAttribute('data-theme') === 'dark' ? '' : 'dark';
+      document.body.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+      document.querySelector('.theme-toggle').textContent = t === 'dark' ? '\u2600' : '\u263E';
+    }
+    (function() {
+      var saved = localStorage.getItem('theme');
+      if (saved === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        document.querySelector('.theme-toggle').textContent = '\u2600';
+      }
+    })();
+  </script>
+</body>
+</html>

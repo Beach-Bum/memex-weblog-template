@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} — {{ site_name }}{% endblock %}
+
+{% block extra_head %}
+  <meta property="og:title" content="{{ article.title }}">
+  <meta property="og:description" content="{{ article.description }}">
+  <meta property="og:url" content="{{ site_url }}{{ article.get_absolute_url }}">
+  <meta property="og:type" content="article">
+  {% if article.published_date %}
+  <meta property="article:published_time" content="{{ article.published_date|date:'Y-m-d' }}">
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if article.hero_painting %}
+  <div class="hero">
+    <img src="/writing/images/dithered/{{ article.hero_painting|cut:'.jpg' }}.png" alt="{{ article.title }}" onerror="this.src='/writing/images/paintings/{{ article.hero_painting }}'">
+  </div>
+  {% endif %}
+
+  <h1>{{ article.title }}</h1>
+  {% if article.subtitle %}<p class="article-meta">{{ article.subtitle }}</p>{% endif %}
+  {% if article.published_date %}<p class="article-meta">{{ article.published_date|date:"F j, Y" }}</p>{% endif %}
+
+  {% if article.tags.all %}
+  <div class="article-tags">
+    {% for tag in article.tags.all %}
+    <a href="/tag/{{ tag.slug }}">{{ tag.name }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="article-body">
+    {{ article.body_html|safe }}
+  </div>
+
+  {% if outgoing_links or incoming_links %}
+  <div class="lineage">
+    <h3>Lineage</h3>
+    <ul>
+      {% for link in outgoing_links %}
+      <li>This article <span class="rel-type">{{ link.get_relationship_display }}</span> <a href="{{ link.target.get_absolute_url }}">{{ link.target.title }}</a>{% if link.note %} — {{ link.note }}{% endif %}</li>
+      {% endfor %}
+      {% for link in incoming_links %}
+      <li><a href="{{ link.source.get_absolute_url }}">{{ link.source.title }}</a> <span class="rel-type">{{ link.get_relationship_display }}</span> this article{% if link.note %} — {{ link.note }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if thread_appearances %}
+  <div class="thread-list">
+    <h3>Appears in threads</h3>
+    <ul>
+      {% for entry in thread_appearances %}
+      <li><a href="/research/">{{ entry.thread.title }}</a> (#{{ entry.position }}){% if entry.annotation %} — {{ entry.annotation }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+{% endblock %}

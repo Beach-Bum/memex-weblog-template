@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Data Explorer{% endblock %}
+
+{% block body_class %}index{% endblock %}
+
+{% block content %}
+<h1>Data Explorer</h1>
+<p>Every article, tag, thread, and lineage link — queryable via SQL. Built with <a href="https://datasette.io">Datasette</a>.</p>
+
+{% for database in databases %}
+<h2>Tables</h2>
+<p>
+    {% if database.show_table_row_counts %}{{ "{:,}".format(database.table_rows_sum) }} rows across {% endif %}{{ database.tables_count }} tables.
+</p>
+<p>
+    {% for table in database.tables_and_views_truncated %}
+    <a href="{{ urls.table(database.name, table.name) }}"{% if table.count %} title="{{ table.count }} rows"{% endif %}>{{ table.name }}</a>{% if table.count %} <span style="color: #888; font-size: 13px;">({{ table.count }})</span>{% endif %}{% if not loop.last %} · {% endif %}
+    {% endfor %}
+</p>
+{% endfor %}
+
+<p style="color: #888; font-size: 13px; margin-top: 24px;">
+    Write your own SQL at <a href="/data/blog" style="color: #888;">the query console</a>.
+    All data is also available as <a href="/data/blog/articles.json?_shape=array" style="color: #888;">JSON</a> and <a href="/data/blog/articles.csv" style="color: #888;">CSV</a>.
+</p>
+{% endblock %}

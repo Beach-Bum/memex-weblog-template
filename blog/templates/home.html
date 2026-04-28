@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ site_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ site_name }}</h1>
+<p>{{ site_description }}</p>
+
+{% for group in grouped %}
+<h2>{{ group.label }}</h2>
+<ul>
+  {% for article in group.articles %}
+  <li>
+    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+    {% if article.published_date %}<span class="article-meta"> — {{ article.published_date|date:"M j, Y" }}</span>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}

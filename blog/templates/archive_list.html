@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Archive — {{ site_name }}{% endblock %}
+
+{% block content %}
+<h1>Archive</h1>
+<ul>
+  {% for a in articles %}
+  <li><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

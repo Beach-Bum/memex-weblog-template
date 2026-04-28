@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Research — {{ site_name }}{% endblock %}
+
+{% block content %}
+<h1>Research Program</h1>
+<p><strong>Thesis:</strong> {{ site_thesis }}</p>
+
+{% if headlines %}
+<h2>Headline Articles</h2>
+<ul>
+  {% for a in headlines %}
+  <li><a href="{{ a.get_absolute_url }}">{{ a.title }}</a> — {{ a.description|truncatewords:20 }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Threads</h2>
+{% for thread in threads %}
+<h3>{{ thread.title }}</h3>
+<p>{{ thread.description }}</p>
+<ol>
+  {% for entry in thread.entries.all %}
+  <li>
+    <a href="{{ entry.article.get_absolute_url }}">{{ entry.article.title }}</a>
+    {% if entry.annotation %}<br><span style="color: #888; font-size: 13px;">{{ entry.annotation }}</span>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% endfor %}
+{% endblock %}
